@@ -91,6 +91,7 @@
 <section id="produtos">
   <h2 class="title">Coleção Completa</h2>
   <div class="grid">
+    <div class="card"><span class="badge">EXCLUSIVO</span><img src="https://photo.yupoo.com/tophotfashion/f342914e/f9f25ad3.jpeg" alt="Produto Verux Exclusive"><div class="info"><h3>Verux Luxury Edition</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
     <div class="card"><span class="badge">TOP</span><img src="https://photo.yupoo.com/tophotfashion/08be0791/4a62e2d0.jpeg" alt="Produto Verux Preto"><div class="info"><h3>Verux Exclusive Black</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
     <div class="card"><span class="badge">NOVO</span><img src="https://images.unsplash.com/photo-1593032465175-481ac7f401a0"><div class="info"><h3>Moletom Premium</h3><div class="price">R$ 329,90</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
     <div class="card"><img src="https://images.unsplash.com/photo-1622560480654-d96214fdc887"><div class="info"><h3>Slide Luxo</h3><div class="price">R$ 219,90</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
@@ -130,17 +131,117 @@
   <button>Entrar</button>
 </section>
 
-<a href="https://wa.me/5511975716043" class="whats">WhatsApp</a>
+<a href="https://wa.me/5599999999999" class="whats">WhatsApp</a>
 
 <footer>
   <p>© 2026 <span>Verux Grifes</span> — Marca Premium</p>
   <p>Políticas • Termos • Privacidade</p>
 </footer>
+
+<!-- PAINEL ADMIN PROFISSIONAL -->
+<section style="padding:70px;background:#000;color:#fff" id="painel">
+  <h2 class="title" style="color:#fff">Painel Admin Verux 🔐</h2>
+
+  <!-- LOGIN -->
+  <div id="loginBox" style="max-width:400px;margin:40px auto;display:grid;gap:15px">
+    <input id="adminUser" placeholder="Usuário" style="padding:14px;border-radius:10px;border:none">
+    <input id="adminPass" type="password" placeholder="Senha" style="padding:14px;border-radius:10px;border:none">
+    <button class="btn" onclick="loginAdmin()">Entrar</button>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="adminPanel" style="display:none;max-width:600px;margin:auto;gap:15px">
+    <h3>Adicionar Produto</h3>
+    <input id="pNome" placeholder="Nome do produto" style="padding:14px;border-radius:10px;border:none">
+    <input id="pImagem" placeholder="Link da imagem" style="padding:14px;border-radius:10px;border:none">
+    <input id="pCor" placeholder="Cor" style="padding:14px;border-radius:10px;border:none">
+    <input id="pPreco" placeholder="Preço (R$)" style="padding:14px;border-radius:10px;border:none">
+    <button class="btn" onclick="addProdutoPro()">Salvar Produto</button>
+  </div>
+</section>
 <script>
 function comprarWhatsApp(){
-  const msg = encodeURIComponent('Olá! Quero comprar o produto VERUX EXCLUSIVE BLACK\nCor: Preto\nValor: R$ 1.900,00');
-  window.open('https://wa.me/5511975716043?text='+msg,'_blank');
+  const msg = encodeURIComponent('Olá! Quero comprar o produto VERUX EXCLUSIVE BLACK
+Cor: Preto
+Valor: R$ 1.900,00');
+  window.open('https://wa.me/5599999999999?text='+msg,'_blank');
 }
+</script>
+<script>
+function addProduto(){
+  const nome = document.getElementById('pNome').value;
+  const img = document.getElementById('pImagem').value;
+  const cor = document.getElementById('pCor').value;
+  const preco = document.getElementById('pPreco').value;
+
+  if(!nome || !img || !preco){alert('Preencha tudo');return}
+
+  const grid = document.querySelector('.grid');
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <span class="badge">NOVO</span>
+    <img src="${img}" alt="${nome}">
+    <div class="info">
+      <h3>${nome}</h3>
+      <p>Cor: ${cor}</p>
+      <div class="price">${preco}</div>
+      <button onclick="comprarWhatsAppProduto('${nome}','${cor}','${preco}')">Comprar no WhatsApp</button>
+    </div>`;
+
+  grid.prepend(card);
+
+  document.getElementById('pNome').value='';
+  document.getElementById('pImagem').value='';
+  document.getElementById('pCor').value='';
+  document.getElementById('pPreco').value='';
+}
+</script>
+<script>
+// LOGIN
+const USER = 'admin';
+const PASS = '1234';
+
+function loginAdmin(){
+  const u = document.getElementById('adminUser').value;
+  const p = document.getElementById('adminPass').value;
+  if(u===USER && p===PASS){
+    localStorage.setItem('veruxAdmin','logado');
+    document.getElementById('loginBox').style.display='none';
+    document.getElementById('adminPanel').style.display='grid';
+  } else alert('Login inválido');
+}
+
+if(localStorage.getItem('veruxAdmin')==='logado'){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('adminPanel').style.display='grid';
+}
+
+// PRODUTOS
+function addProdutoPro(){
+  const nome=pNome.value,img=pImagem.value,cor=pCor.value,preco=pPreco.value;
+  if(!nome||!img||!preco){alert('Preencha tudo');return}
+
+  const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
+  produtos.push({nome,img,cor,preco});
+  localStorage.setItem('veruxProdutos',JSON.stringify(produtos));
+  renderProdutos();
+
+  pNome.value=pImagem.value=pCor.value=pPreco.value='';
+}
+
+function renderProdutos(){
+  const grid=document.querySelector('.grid');
+  grid.innerHTML='';
+  const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
+  produtos.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<span class="badge">NOVO</span><img src="${p.img}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar no WhatsApp</button></div>`;
+    grid.appendChild(card);
+  });
+}
+renderProdutos();
 </script>
 </body>
 </html>
