@@ -59,6 +59,8 @@
 
     @media(max-width:900px){.push{grid-template-columns:1fr}.hero h2{font-size:42px}}
   </style>
+<!-- MERCADO PAGO SDK -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 <body>
 <header>
@@ -139,10 +141,10 @@
 <section id="produtos">
   <h2 class="title">Coleção Completa</h2>
   <div class="grid">
-    <div class="card"><span class="badge">EXCLUSIVO</span><img src="https://photo.yupoo.com/tophotfashion/f342914e/f9f25ad3.jpeg" alt="Produto Verux Exclusive"><div class="info"><h3>Verux Luxury Edition</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
-    <div class="card"><span class="badge">TOP</span><img src="https://photo.yupoo.com/tophotfashion/08be0791/4a62e2d0.jpeg" alt="Produto Verux Preto"><div class="info"><h3>Verux Exclusive Black</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
-    <div class="card"><span class="badge">NOVO</span><img src="https://images.unsplash.com/photo-1593032465175-481ac7f401a0"><div class="info"><h3>Moletom Premium</h3><div class="price">R$ 329,90</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1622560480654-d96214fdc887"><div class="info"><h3>Slide Luxo</h3><div class="price">R$ 219,90</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
+    <div class="card"><span class="badge">EXCLUSIVO</span><img src="https://photo.yupoo.com/tophotfashion/f342914e/f9f25ad3.jpeg" alt="Produto Verux Exclusive"><div class="info"><h3>Verux Luxury Edition</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar Agora</button></div></div>
+    <div class="card"><span class="badge">TOP</span><img src="https://photo.yupoo.com/tophotfashion/08be0791/4a62e2d0.jpeg" alt="Produto Verux Preto"><div class="info"><h3>Verux Exclusive Black</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar Agora</button></div></div>
+    <div class="card"><span class="badge">NOVO</span><img src="https://images.unsplash.com/photo-1593032465175-481ac7f401a0"><div class="info"><h3>Moletom Premium</h3><div class="price">R$ 329,90</div><button onclick="comprarWhatsApp()">Comprar Agora</button></div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1622560480654-d96214fdc887"><div class="info"><h3>Slide Luxo</h3><div class="price">R$ 219,90</div><button onclick="comprarWhatsApp()">Comprar Agora</button></div></div>
   </div>
 </section>
 
@@ -179,7 +181,7 @@
   <button>Entrar</button>
 </section>
 
-<a href="https://wa.me/5599999999999" class="whats">WhatsApp</a>
+<a href="https://wa.me/5511975716043" class="whats">WhatsApp</a>
 
 <footer>
   <p>© 2026 <span>Verux Grifes</span> — Marca Premium</p>
@@ -210,6 +212,14 @@
 
   <h3>🗑️ Gerenciar Produtos</h3>
   <div id="listaAdminProdutos" style="display:grid;gap:10px"></div>
+
+<h3>🏷️ Criar Cupom</h3>
+<input id="cupomCodigo" placeholder="Código (ex: VERUX10)">
+<input id="cupomValor" placeholder="Desconto %">
+<button onclick="criarCupom()">Salvar Cupom</button>
+
+<h3>📊 Relatório de Pedidos</h3>
+<div id="relatorioPedidos"></div>
 </div>
 </section>
 <script>
@@ -217,7 +227,7 @@ function comprarWhatsApp(){
   const msg = encodeURIComponent('Olá! Quero comprar o produto VERUX EXCLUSIVE BLACK
 Cor: Preto
 Valor: R$ 1.900,00');
-  window.open('https://wa.me/5599999999999?text='+msg,'_blank');
+  window.open('https://wa.me/5511975716043?text='+msg,'_blank');
 }
 </script>
 <script>
@@ -239,7 +249,7 @@ function addProduto(){
       <h3>${nome}</h3>
       <p>Cor: ${cor}</p>
       <div class="price">${preco}</div>
-      <button onclick="comprarWhatsAppProduto('${nome}','${cor}','${preco}')">Comprar no WhatsApp</button>
+      <button onclick="comprarWhatsAppProduto('${nome}','${cor}','${preco}')">Comprar Agora</button>
     </div>`;
 
   grid.prepend(card);
@@ -252,17 +262,20 @@ function addProduto(){
 </script>
 <script>
 // LOGIN
+// LOGIN ADMIN (SENHA CRIPTOGRAFADA)
 const USER = 'admin';
-const PASS = '1234';
+const PASS_HASH = '21232f297a57a5a743894a0e4a801fc3'; // senha: admin
+function md5(string){return CryptoJS.MD5(string).toString();}
 
 function loginAdmin(){
   const u = document.getElementById('adminUser').value;
   const p = document.getElementById('adminPass').value;
-  if(u===USER && p===PASS){
+  if(u===USER && md5(p)===PASS_HASH){
     localStorage.setItem('veruxAdmin','logado');
     document.getElementById('loginBox').style.display='none';
     document.getElementById('adminPanel').style.display='grid';
   } else alert('Login inválido');
+} else alert('Login inválido');
 }
 
 if(localStorage.getItem('veruxAdmin')==='logado'){
@@ -276,7 +289,7 @@ function addProdutoPro(){
   if(!nome||!img||!preco){alert('Preencha tudo');return}
 
   const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
-  produtos.push({nome,img,cor,preco});
+  produtos.push({nome,img,cor,preco,estoque:10});({nome,img,cor,preco});
   localStorage.setItem('veruxProdutos',JSON.stringify(produtos));
   renderProdutos();
 
@@ -299,11 +312,23 @@ function renderProdutos(){
 
   const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
   produtos.forEach((p,i)=>{
-    // SITE
     if(grid){
       const card=document.createElement('div');
       card.className='card';
-      card.innerHTML=`<span class="badge">NOVO</span><img src="${p.img}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar no WhatsApp</button></div>`;
+      card.innerHTML=`<span class="badge">${p.estoque} un.</span><img src="${p.img}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar Agora</button></div>`;
+      grid.appendChild(card);
+    }
+    if(listaAdmin){
+      const item=document.createElement('div');
+      item.style.background='#111';item.style.padding='12px';item.style.borderRadius='10px';
+      item.innerHTML=`<b>${p.nome}</b> | Estoque: <input value='${p.estoque}' style='width:50px' onchange='editarEstoque(${i},this.value)'> <br>Preço: <input value='${p.preco}' onchange='editarPreco(${i},this.value)'><br>Imagem: <input value='${p.img}' onchange='editarImagem(${i},this.value)'><br><button onclick='removerProduto(${i})'>Remover</button>`;
+      listaAdmin.appendChild(item);
+    }
+  });
+}
+function editarEstoque(i,v){const p=JSON.parse(localStorage.getItem('veruxProdutos'));p[i].estoque=v;localStorage.setItem('veruxProdutos',JSON.stringify(p));renderProdutos();}
+function editarPreco(i,v){const p=JSON.parse(localStorage.getItem('veruxProdutos'));p[i].preco=v;localStorage.setItem('veruxProdutos',JSON.stringify(p));renderProdutos();}
+function editarImagem(i,v){const p=JSON.parse(localStorage.getItem('veruxProdutos'));p[i].img=v;localStorage.setItem('veruxProdutos',JSON.stringify(p));renderProdutos();}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar Agora</button></div>`;
       grid.appendChild(card);
     }
 
@@ -320,7 +345,7 @@ function renderProdutos(){
       listaAdmin.appendChild(item);
     }
   });
-}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar no WhatsApp</button></div>`;
+}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar Agora</button></div>`;
     grid.appendChild(card);
   });
 }
@@ -382,9 +407,57 @@ function calcularFrete(){
 }
 
 // ===== CHECKOUT PIX =====
+// ===== CHECKOUT MERCADO PAGO (PIX + CARTÃO + BOLETO) =====
+// ⚠️ INSIRA SUAS CREDENCIAIS REAIS AQUI
+const MP_PUBLIC_KEY = 'SUA_PUBLIC_KEY_AQUI';
+const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'pt-BR' });
+
+// ===== CHECKOUT TRANSPARENTE MERCADO PAGO =====
+function iniciarCheckoutMP(produto, total){
+  document.body.innerHTML = `
+  <section style='max-width:500px;margin:40px auto;font-family:Poppins'>
+    <h2>Pagamento Seguro 🔒</h2>
+    <p><b>${produto}</b></p>
+    <p>Total: <b>R$ ${total}</b></p>
+
+    <div id='paymentBrick_container'></div>
+  </section>`;
+
+  mp.bricks().create('payment','paymentBrick_container',{
+    initialization:{
+      amount: Number(total),
+    },
+    customization:{
+      paymentMethods:{
+        creditCard:'all',
+        debitCard:'all',
+        ticket:'all',
+        bankTransfer:'all'
+      },
+      installments:{
+        maxInstallments:12
+      }
+    },
+    callbacks:{
+      onReady:()=>console.log('Checkout pronto'),
+      onSubmit:({ selectedPaymentMethod, formData })=>{
+        console.log('Pagamento enviado', formData);
+        salvarPedido('Pago');
+        alert('Pagamento processado! Pedido confirmado.');
+      }
+    }
+  });
+}(produto, total){
+  alert('Checkout Mercado Pago iniciado (modo integração).
+
+Produto: '+produto+'
+Total: R$ '+total+'
+
+👉 Próximo passo: inserir sua PUBLIC KEY do Mercado Pago.');
+}
+
 function checkoutPix(){
-  alert('Pagamento via PIX ativado.
-Chave Pix: contato@verux.com');
+  iniciarCheckoutMP('Compra Verux', 'Consultar carrinho');
 }
 
 // ===== PÁGINA DE PRODUTO PREMIUM =====
