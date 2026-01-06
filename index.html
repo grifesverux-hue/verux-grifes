@@ -71,6 +71,9 @@
   </nav>
 </header>
 
+<!-- BOTAO SECRETO ADMIN (INVISÍVEL) -->
+<button id="adminSecretBtn" style="position:fixed;bottom:0;right:0;width:20px;height:20px;opacity:0" onclick="abrirAdmin()"></button>
+
 <div class="hero">
   <div>
     <h2>Luxo Que Impõe Presença</h2>
@@ -86,6 +89,51 @@
     <a class="btn">Garantir o Meu</a>
   </div>
   <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519" />
+</section>
+
+<!-- HISTÓRICO DE PEDIDOS -->
+<section id="historico" style="padding:60px;background:#f7f7f7">
+<h2>📦 Histórico de Pedidos</h2>
+<div id="listaPedidos"></div>
+</section>
+
+<!-- PÁGINA PEDIDO CONFIRMADO -->
+<section id="confirmado" style="display:none;padding:80px;text-align:center">
+<h1>✅ Pedido Confirmado!</h1>
+<p>Recebemos seu pedido. Em instantes entraremos em contato.</p>
+<button onclick="enviarWhats()">Enviar comprovante no WhatsApp</button>
+</section>
+
+<!-- CUPOM -->
+<section id="cupom" style="padding:60px;background:#111;color:#fff">
+<h2>🏷️ Cupom de Desconto</h2>
+<input id="codigoCupom" placeholder="Digite o cupom">
+<button onclick="aplicarCupom()">Aplicar</button>
+<p id="cupomMsg"></p>
+</section>
+
+<!-- AVALIAÇÕES -->
+<section id="avaliacoes" style="padding:60px">
+<h2>⭐ Avaliações</h2>
+<div id="listaAvaliacoes"></div>
+<input id="nomeAval" placeholder="Seu nome">
+<textarea id="textoAval" placeholder="Avaliação"></textarea>
+<select id="notaAval"><option>5</option><option>4</option><option>3</option></select>
+<button onclick="salvarAvaliacao()">Enviar Avaliação</button>
+</section>
+
+<!-- CONFIGURAÇÃO DE FRETE (ADMIN SECRETO) -->
+<section id="freteAdmin" style="display:none;padding:60px;background:#111;color:#fff">
+<h2>Configurar Frete</h2>
+<p>Edite os valores sem mexer em código</p>
+<div style="max-width:400px;display:grid;gap:10px">
+<input id="fSudeste" placeholder="Sudeste">
+<input id="fSul" placeholder="Sul">
+<input id="fCentro" placeholder="Centro-Oeste">
+<input id="fNordeste" placeholder="Nordeste">
+<input id="fNorte" placeholder="Norte">
+<button onclick="salvarFrete()">Salvar Fretes</button>
+</div>
 </section>
 
 <section id="produtos">
@@ -139,7 +187,7 @@
 </footer>
 
 <!-- PAINEL ADMIN PROFISSIONAL -->
-<section style="padding:70px;background:#000;color:#fff" id="painel">
+<section style="padding:70px;background:#000;color:#fff;display:none" id="painel">
   <h2 class="title" style="color:#fff">Painel Admin Verux 🔐</h2>
 
   <!-- LOGIN -->
@@ -150,14 +198,19 @@
   </div>
 
   <!-- PAINEL -->
-  <div id="adminPanel" style="display:none;max-width:600px;margin:auto;gap:15px">
-    <h3>Adicionar Produto</h3>
-    <input id="pNome" placeholder="Nome do produto" style="padding:14px;border-radius:10px;border:none">
-    <input id="pImagem" placeholder="Link da imagem" style="padding:14px;border-radius:10px;border:none">
-    <input id="pCor" placeholder="Cor" style="padding:14px;border-radius:10px;border:none">
-    <input id="pPreco" placeholder="Preço (R$)" style="padding:14px;border-radius:10px;border:none">
-    <button class="btn" onclick="addProdutoPro()">Salvar Produto</button>
-  </div>
+  <div id="adminPanel" style="display:none;max-width:700px;margin:auto;gap:20px">
+  <h3>➕ Adicionar Produto</h3>
+  <input id="pNome" placeholder="Nome do produto" style="padding:14px;border-radius:10px;border:none">
+  <input id="pImagem" placeholder="Link da imagem" style="padding:14px;border-radius:10px;border:none">
+  <input id="pCor" placeholder="Cor" style="padding:14px;border-radius:10px;border:none">
+  <input id="pPreco" placeholder="Preço (R$)" style="padding:14px;border-radius:10px;border:none">
+  <button class="btn" onclick="addProdutoPro()">Salvar Produto</button>
+
+  <hr style="margin:30px 0;border:1px solid #333">
+
+  <h3>🗑️ Gerenciar Produtos</h3>
+  <div id="listaAdminProdutos" style="display:grid;gap:10px"></div>
+</div>
 </section>
 <script>
 function comprarWhatsApp(){
@@ -227,21 +280,225 @@ function addProdutoPro(){
   localStorage.setItem('veruxProdutos',JSON.stringify(produtos));
   renderProdutos();
 
+function removerProduto(index){
+  if(!confirm('Remover este produto?')) return;
+  const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
+  produtos.splice(index,1);
+  localStorage.setItem('veruxProdutos',JSON.stringify(produtos));
+  renderProdutos();
+}
+
   pNome.value=pImagem.value=pCor.value=pPreco.value='';
 }
 
 function renderProdutos(){
   const grid=document.querySelector('.grid');
-  grid.innerHTML='';
+  const listaAdmin=document.getElementById('listaAdminProdutos');
+  if(grid) grid.innerHTML='';
+  if(listaAdmin) listaAdmin.innerHTML='';
+
   const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
-  produtos.forEach(p=>{
-    const card=document.createElement('div');
-    card.className='card';
-    card.innerHTML=`<span class="badge">NOVO</span><img src="${p.img}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar no WhatsApp</button></div>`;
+  produtos.forEach((p,i)=>{
+    // SITE
+    if(grid){
+      const card=document.createElement('div');
+      card.className='card';
+      card.innerHTML=`<span class="badge">NOVO</span><img src="${p.img}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar no WhatsApp</button></div>`;
+      grid.appendChild(card);
+    }
+
+    // ADMIN
+    if(listaAdmin){
+      const item=document.createElement('div');
+      item.style.display='flex';
+      item.style.justifyContent='space-between';
+      item.style.alignItems='center';
+      item.style.background='#111';
+      item.style.padding='12px 15px';
+      item.style.borderRadius='10px';
+      item.innerHTML=`<span>${p.nome} — ${p.preco}</span><button style="background:#c00;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer" onclick="removerProduto(${i})">Remover</button>`;
+      listaAdmin.appendChild(item);
+    }
+  });
+}"><div class="info"><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class="price">${p.preco}</div><button onclick="comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')">Comprar no WhatsApp</button></div>`;
     grid.appendChild(card);
   });
 }
 renderProdutos();
+</script>
+<script>
+// ABA SECRETA ADMIN SEM MEXER EM CÓDIGO
+function abrirAdmin(){
+  const painel = document.getElementById('painel');
+  const frete = document.getElementById('freteAdmin');
+  const show = painel.style.display === 'none' || painel.style.display === '';
+  painel.style.display = show ? 'block' : 'none';
+  frete.style.display = show ? 'block' : 'none';
+  window.scrollTo({ top: painel.offsetTop, behavior: 'smooth' });
+}(){
+  const painel = document.getElementById('painel');
+  if(painel.style.display === 'none' || painel.style.display === ''){
+    painel.style.display = 'block';
+    window.scrollTo({ top: painel.offsetTop, behavior: 'smooth' });
+  } else {
+    painel.style.display = 'none';
+  }
+}
+</script>
+<script>
+// ===== CARRINHO =====
+let carrinho = JSON.parse(localStorage.getItem('veruxCarrinho')||'[]');
+function addCarrinho(prod){
+  carrinho.push(prod);
+  localStorage.setItem('veruxCarrinho',JSON.stringify(carrinho));
+  alert('Produto adicionado ao carrinho');
+}
+
+function abrirCarrinho(){
+  let total = 0;
+  let html = '🛒 CARRINHO VERUX
+
+';
+  carrinho.forEach((p,i)=>{total+=parseFloat(p.preco.replace(/[^0-9]/g,''));html+=`${i+1}. ${p.nome} - ${p.preco}
+`;});
+  html += `
+TOTAL: R$ ${total}`;
+  alert(html);
+}
+
+// ===== FRETE EDITÁVEL PELO ADMIN =====
+let fretes = JSON.parse(localStorage.getItem('veruxFretes')) || {
+  sudeste:25,
+  sul:30,
+  centro:35,
+  nordeste:40,
+  norte:50
+};
+
+function calcularFrete(){
+  const r = document.getElementById('regiao').value;
+  const valores = { sudeste:25, sul:30, centro:35, nordeste:40, norte:50 };
+  document.getElementById('freteResultado').innerText = 'Frete: R$ '+fretes[r]+',00';
+}
+
+// ===== CHECKOUT PIX =====
+function checkoutPix(){
+  alert('Pagamento via PIX ativado.
+Chave Pix: contato@verux.com');
+}
+
+// ===== PÁGINA DE PRODUTO PREMIUM =====
+function abrirProduto(p){
+  document.body.innerHTML = `<div style='padding:40px;font-family:sans-serif'><h1>${p.nome}</h1><img src='${p.img}' style='max-width:300px'><p>Cor: ${p.cor}</p><h2>${p.preco}</h2><button onclick='addCarrinho(${JSON.stringify(p)})'>Adicionar ao carrinho</button><button onclick='checkoutPix()'>Comprar no Pix</button><h3>📦 Endereço de Entrega</h3>
+<p><strong>Frete calculado automaticamente</strong></p>
+<input id='cep' placeholder='CEP' style='padding:10px;width:200px'><br><br>
+<input id='endereco' placeholder='Endereço completo' style='padding:10px;width:300px'><br><br>
+<select id='regiao' style='padding:10px;width:220px'>
+  <option value='sudeste'>Sudeste</option>
+  <option value='sul'>Sul</option>
+  <option value='centro'>Centro-Oeste</option>
+  <option value='nordeste'>Nordeste</option>
+  <option value='norte'>Norte</option>
+</select>
+<br><br>
+<button onclick='calcularFrete()'>Calcular Frete</button>
+<p id='freteResultado'></p>
+
+<h3>🔥 Clientes também compram:</h3><p>Meias Premium Verux</p><button onclick='alert("Upsell adicionado")'>Adicionar Upsell</button></div>`;
+}
+</script>
+<script>
+function salvarFrete(){
+  fretes = {
+    sudeste: Number(fSudeste.value),
+    sul: Number(fSul.value),
+    centro: Number(fCentro.value),
+    nordeste: Number(fNordeste.value),
+    norte: Number(fNorte.value)
+  };
+  localStorage.setItem('veruxFretes',JSON.stringify(fretes));
+  alert('Fretes atualizados com sucesso');
+}
+</script>
+<script>
+/* ===== PEDIDOS ===== */
+function salvarPedido(){
+  const pedidos = JSON.parse(localStorage.getItem('veruxPedidos')||'[]');
+  pedidos.push({data:new Date().toLocaleString(),total:totalComFrete()});
+  localStorage.setItem('veruxPedidos',JSON.stringify(pedidos));
+}
+function listarPedidos(){
+  const pedidos = JSON.parse(localStorage.getItem('veruxPedidos')||'[]');
+  listaPedidos.innerHTML = pedidos.map(p=>`<p>🛒 ${p.data} - R$ ${p.total}</p>`).join('');
+}
+
+/* ===== CUPOM ===== */
+let desconto = 0;
+function aplicarCupom(){
+  if(codigoCupom.value==='VERUX10'){ desconto = 0.1; cupomMsg.innerText='Cupom aplicado!'; }
+  else cupomMsg.innerText='Cupom inválido';
+}
+
+/* ===== AVALIAÇÕES ===== */
+function salvarAvaliacao(){
+  const av = JSON.parse(localStorage.getItem('veruxAval')||'[]');
+  av.push({n:nomeAval.value,t:textoAval.value,s:notaAval.value});
+  localStorage.setItem('veruxAval',JSON.stringify(av));
+  listarAval();
+}
+function listarAval(){
+  const av = JSON.parse(localStorage.getItem('veruxAval')||'[]');
+  listaAvaliacoes.innerHTML = av.map(a=>`<p>⭐${a.s} - <b>${a.n}</b><br>${a.t}</p>`).join('');
+}
+
+/* AUTO */
+listarPedidos(); listarAval();
+</script>
+<!-- 🔥 CROSS-SELL / ESTOQUE / TIMER / OFERTA EXCLUSIVA / MOBILE PREMIUM / GITHUB READY -->
+<script>
+// ===== CONTADOR DE ESTOQUE =====
+let estoque = JSON.parse(localStorage.getItem('veruxEstoque')) || 7;
+function renderEstoque(){
+  const el = document.getElementById('estoqueInfo');
+  if(el) el.innerText = '⚠️ Apenas '+estoque+' unidades disponíveis';
+}
+renderEstoque();
+
+// ===== TIMER DE URGÊNCIA =====
+let tempo = 15 * 60;
+setInterval(()=>{
+  if(tempo<=0) return;
+  tempo--;
+  const m = String(Math.floor(tempo/60)).padStart(2,'0');
+  const s = String(tempo%60).padStart(2,'0');
+  const t = document.getElementById('timerUrgencia');
+  if(t) t.innerText = '🔥 Oferta expira em '+m+':'+s;
+},1000);
+
+// ===== PÁGINA DE OFERTA EXCLUSIVA =====
+function abrirOferta(){
+  document.body.innerHTML = `
+  <section style='padding:60px;font-family:Poppins'>
+    <h1>🔥 Oferta Exclusiva Verux</h1>
+    <p id='timerUrgencia'></p>
+    <p id='estoqueInfo'></p>
+    <h2>Verux Exclusive Black</h2>
+    <p><del>R$ 1.900,00</del> <strong>R$ 1.710,00</strong></p>
+    <button onclick='checkoutPix()'>Comprar Agora</button>
+    <h3>Clientes também compraram:</h3>
+    <p>Meias Premium + Spray Limpeza</p>
+    <button onclick='alert("Upsell adicionado")'>Adicionar Upsell</button>
+  </section>`;
+  renderEstoque();
+}
+
+// ===== MOBILE ULTRA PREMIUM =====
+if(window.innerWidth < 768){
+  document.body.style.fontSize='18px';
+}
+
+// ===== GITHUB + NETLIFY READY =====
+console.log('Projeto pronto para GitHub + Netlify');
 </script>
 </body>
 </html>
