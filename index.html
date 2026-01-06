@@ -360,15 +360,14 @@ function abrirAdmin(){
   painel.style.display = show ? 'block' : 'none';
   frete.style.display = show ? 'block' : 'none';
   window.scrollTo({ top: painel.offsetTop, behavior: 'smooth' });
-}(){
-  const painel = document.getElementById('painel');
-  if(painel.style.display === 'none' || painel.style.display === ''){
-    painel.style.display = 'block';
-    window.scrollTo({ top: painel.offsetTop, behavior: 'smooth' });
-  } else {
-    painel.style.display = 'none';
-  }
 }
+
+// 🔑 TECLA SECRETA PARA ABRIR PAINEL (CTRL + SHIFT + A)
+document.addEventListener('keydown', function(e){
+  if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a'){
+    abrirAdmin();
+  }
+});
 </script>
 <script>
 // ===== CARRINHO =====
