@@ -1,143 +1,129 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VÉRUX GRIFES | Luxo & Exclusividade</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Montserrat',sans-serif;background:#0b0b0b;color:#f5f5f5}
-    header{padding:25px;text-align:center;border-bottom:1px solid #1f1f1f}
-    header h1{font-family:'Playfair Display',serif;letter-spacing:4px;color:#c9a24d}
-    header p{font-size:14px;color:#aaa;margin-top:8px}
-    .container{max-width:1200px;margin:auto;padding:40px 20px}
-    .filters{text-align:center;margin-bottom:30px}
-    .filters button{margin:5px;padding:10px 16px;background:#111;color:#c9a24d;border:1px solid #1f1f1f;cursor:pointer}
-    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
-    .product{background:#111;border:1px solid #1f1f1f;padding:20px;text-align:center;cursor:pointer}
-    .product img{width:100%;border-radius:8px}
-    .product h3{margin:15px 0 5px;color:#c9a24d}
-    .price{margin:10px 0;font-size:18px;font-weight:600}
-    .cart{position:fixed;top:0;right:-100%;width:340px;height:100%;background:#0b0b0b;border-left:1px solid #1f1f1f;padding:20px;transition:.3s;z-index:10}
-    .cart.active{right:0}
-    .cart h2{text-align:center;margin-bottom:20px;color:#c9a24d}
-    .cart ul{list-style:none;font-size:14px}
-    .cart button{width:100%;margin-top:15px;background:#c9a24d;color:#000;padding:12px;border:none;font-weight:600}
-    .open-cart{position:fixed;bottom:20px;right:20px;background:#c9a24d;color:#000;padding:15px;border-radius:50%;cursor:pointer;font-weight:700}
-    footer{margin-top:60px;padding:30px;text-align:center;font-size:13px;color:#777;border-top:1px solid #1f1f1f}
-    footer a{color:#c9a24d;text-decoration:none;margin:0 10px}
-
-    /* Modal Produto */
-    .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:20}
-    .modal-content{background:#111;padding:30px;max-width:400px;width:90%;border:1px solid #1f1f1f}
-    select,button{width:100%;padding:10px;margin-top:10px}
-
-    /* PIX */
-    .pix{margin-top:20px;border-top:1px solid #1f1f1f;padding-top:15px;text-align:center}
-    .pix img{width:180px;margin:10px auto}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VÉRUX GRIFES | Loja Oficial</title>
+<meta name="description" content="VÉRUX GRIFES — Loja premium de roupas e tênis de grife. Exclusividade, luxo e envio rápido." />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',sans-serif;background:#0b0b0b;color:#f5f5f5}
+header{padding:30px;text-align:center;border-bottom:1px solid #1f1f1f}
+header h1{font-family:'Playfair Display',serif;letter-spacing:4px;color:#d4af37}
+header p{color:#aaa;margin-top:8px}
+nav{display:flex;justify-content:center;gap:20px;margin-top:15px}
+nav a{color:#d4af37;text-decoration:none;font-size:14px}
+.container{max-width:1200px;margin:auto;padding:40px 20px}
+.filters{text-align:center;margin-bottom:30px}
+.filters button{margin:6px;padding:10px 18px;background:#111;color:#d4af37;border:1px solid #1f1f1f;cursor:pointer}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+.product{background:#111;border:1px solid #1f1f1f;padding:20px;text-align:center;cursor:pointer;transition:.3s}
+.product:hover{transform:translateY(-6px)}
+.product img{width:100%;border-radius:12px;height:260px;object-fit:cover}
+.product h3{margin:15px 0 6px;color:#d4af37}
+.price{font-size:18px;font-weight:600}
+.cart{position:fixed;top:0;right:-100%;width:360px;height:100%;background:#0b0b0b;border-left:1px solid #1f1f1f;padding:20px;transition:.3s;z-index:20}
+.cart.active{right:0}
+.cart h2{text-align:center;color:#d4af37;margin-bottom:15px}
+.cart ul{list-style:none;font-size:14px}
+.cart input,.cart button{width:100%;padding:10px;margin-top:10px}
+.cart button{background:#d4af37;color:#000;border:none;font-weight:600}
+.open-cart{position:fixed;bottom:20px;right:20px;background:#d4af37;color:#000;padding:15px;border-radius:50%;cursor:pointer;font-weight:700}
+footer{margin-top:60px;padding:30px;text-align:center;font-size:13px;color:#777;border-top:1px solid #1f1f1f}
+footer a{color:#d4af37;text-decoration:none;margin:0 8px}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:30}
+.modal-content{background:#111;padding:30px;max-width:420px;width:92%;border:1px solid #1f1f1f}
+select,button{width:100%;padding:10px;margin-top:10px}
+.pix{text-align:center;border-top:1px solid #1f1f1f;margin-top:15px;padding-top:15px}
+.pix img{width:170px;margin:10px auto}
+</style>
 </head>
 <body>
 <header>
-  <h1>VÉRUX GRIFES</h1>
-  <p>Luxo não se explica. Se veste.</p>
+<h1>VÉRUX GRIFES</h1>
+<p>Luxo não se explica. Se veste.</p>
+<nav>
+<a href="#">Loja</a>
+<a href="#">Trocas</a>
+<a href="#">Contato</a>
+</nav>
 </header>
 
 <div class="container">
-  <div class="filters">
-    <button onclick="filterProducts('all')">Todos</button>
-    <button onclick="filterProducts('tenis')">Tênis</button>
-    <button onclick="filterProducts('jaqueta')">Jaquetas</button>
-    <button onclick="filterProducts('camiseta')">Camisetas</button>
-    <button onclick="filterProducts('calca')">Calças</button>
-    <button onclick="filterProducts('chinelo')">Chinelos</button>
-  </div>
-
-  <section class="products">
-    <div class="product" data-category="camiseta" onclick="openProduct('Camiseta Premium VÉRUX',299.90,['P','M','G','GG'],5)">
-      <img src="https://images.unsplash.com/photo-1520974735194-8dcbf59f0fef" />
-      <h3>Camiseta Premium</h3>
-      <div class="price">R$ 299,90</div>
-    </div>
-
-    <div class="product" data-category="tenis" onclick="openProduct('Tênis Exclusive VÉRUX',1199.90,['40','41','42','43'],3)">
-      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" />
-      <h3>Tênis Exclusive</h3>
-      <div class="price">R$ 1.199,90</div>
-    </div>
-  </section>
+<div class="filters">
+<button onclick="filterProducts('all')">Todos</button>
+<button onclick="filterProducts('tenis')">Tênis</button>
+<button onclick="filterProducts('jaqueta')">Jaquetas</button>
+<button onclick="filterProducts('camiseta')">Camisetas</button>
+<button onclick="filterProducts('calca')">Calças</button>
+<button onclick="filterProducts('chinelo')">Chinelos</button>
+</div>
+<section class="products" id="products"></section>
 </div>
 
 <div class="cart" id="cart">
-  <h2>Carrinho</h2>
-  <ul id="cart-items"></ul>
-  <button onclick="checkout()">Finalizar</button>
+<h2>Carrinho</h2>
+<ul id="cart-items"></ul>
+<p id="total"></p>
+<button onclick="checkout()">Finalizar no WhatsApp</button>
 </div>
 <div class="open-cart" onclick="toggleCart()">🛒</div>
 
+<div class="modal" id="productModal"><div class="modal-content">
+<h3 id="p-name"></h3><p id="p-price"></p><p id="p-stock"></p>
+<select id="p-size"></select>
+<button onclick="addSelectedToCart()">Adicionar ao Carrinho</button>
+<div class="pix"><p>Pagamento via PIX</p>
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PIX-VERUX" />
+<p>Chave PIX: <strong>PIX-VERUX</strong></p></div>
+<button onclick="closeModal()">Fechar</button>
+</div></div>
+
 <footer>
-  <p>© 2026 VÉRUX GRIFES</p>
+<p>© 2026 VÉRUX GRIFES — Todos os direitos reservados</p>
 </footer>
 
-<!-- MODAL PRODUTO -->
-<div class="modal" id="productModal">
-  <div class="modal-content">
-    <h3 id="p-name"></h3>
-    <p id="p-price"></p>
-    <p id="p-stock"></p>
-    <select id="p-size"></select>
-    <button onclick="addSelectedToCart()">Adicionar ao carrinho</button>
-    <div class="pix">
-      <p>Pagamento via PIX</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PIX-VÉRUX" />
-      <p>Chave PIX: <strong>PIX-VÉRUX</strong></p>
-    </div>
-    <button onclick="closeModal()">Fechar</button>
-  </div>
-</div>
-
 <script>
-  let cart = [];
-  let currentProduct = {};
+let cart=[];let current={};
+const productsData=[];
+const categories=['tenis','jaqueta','camiseta','calca','chinelo'];
 
-  function openProduct(name, price, sizes, stock){
-    currentProduct={name,price,sizes,stock};
-    document.getElementById('p-name').innerText=name;
-    document.getElementById('p-price').innerText='R$ '+price.toFixed(2);
-    document.getElementById('p-stock').innerText='Estoque: '+stock;
-    const select=document.getElementById('p-size');
-    select.innerHTML='';
-    sizes.forEach(s=>{const o=document.createElement('option');o.value=s;o.text=s;select.add(o)});
-    document.getElementById('productModal').style.display='flex';
-  }
+for(let i=1;i<=100;i++){
+  const cat=categories[i%categories.length];
+  productsData.push({
+    name:`Produto VÉRUX ${i}`,
+    price:(199+(i*7)).toFixed(2),
+    category:cat,
+    stock:Math.floor(Math.random()*15)+1,
+    sizes:cat==='tenis'?['38','39','40','41','42','43']:['P','M','G','GG'],
+    img:`https://source.unsplash.com/400x400/?fashion,${cat},${i}`
+  });
+}
 
-  function closeModal(){document.getElementById('productModal').style.display='none'}
+const productsEl=document.getElementById('products');
 
-  function addSelectedToCart(){
-    cart.push({name:currentProduct.name+' - Tam '+document.getElementById('p-size').value,price:currentProduct.price});
-    alert('Adicionado ao carrinho');closeModal();renderCart();
-  }
+function renderProducts(filter='all'){
+  productsEl.innerHTML='';
+  productsData.forEach(p=>{
+    if(filter!=='all' && p.category!==filter) return;
+    const div=document.createElement('div');
+    div.className='product';
+    div.dataset.category=p.category;
+    div.onclick=()=>openProduct(p.name,parseFloat(p.price),p.sizes,p.stock);
+    div.innerHTML=`<img src="${p.img}"/><h3>${p.name}</h3><div class="price">R$ ${p.price}</div>`;
+    productsEl.appendChild(div);
+  });
+}
+renderProducts();
 
-  function renderCart(){
-    const list=document.getElementById('cart-items');list.innerHTML='';
-    cart.forEach(i=>{const li=document.createElement('li');li.innerText=i.name+' - R$ '+i.price.toFixed(2);list.appendChild(li)})
-  }
-
-  function toggleCart(){document.getElementById('cart').classList.toggle('active')}
-
-  function checkout(){
-    let total=0;let msg='🦁 Pedido VÉRUX GRIFES:%0A%0A';
-    cart.forEach(i=>{total+=i.price;msg+=i.name+' - R$ '+i.price.toFixed(2)+'%0A'});
-    msg+='%0A💰 Total: R$ '+total.toFixed(2);
-    window.open('https://wa.me/5511975716043?text='+msg,'_blank');
-  }
-
-  function filterProducts(cat){
-    document.querySelectorAll('.product').forEach(p=>{
-      p.style.display=(cat==='all'||p.dataset.category===cat)?'block':'none'
-    })
-  }
+function openProduct(n,p,s,st){current={n,p,s,st};p_name.innerText=n;p_price.innerText='R$ '+p.toFixed(2);p_stock.innerText='Estoque: '+st;p_size.innerHTML='';s.forEach(t=>{let o=document.createElement('option');o.value=t;o.text=t;p_size.add(o)});productModal.style.display='flex'}
+function closeModal(){productModal.style.display='none'}
+function addSelectedToCart(){cart.push({name:current.n+' ('+p_size.value+')',price:current.p});renderCart();closeModal()}
+function renderCart(){cart_items.innerHTML='';let t=0;cart.forEach(i=>{t+=i.price;let li=document.createElement('li');li.innerText=i.name+' - R$ '+i.price.toFixed(2);cart_items.appendChild(li)});total.innerText='Total: R$ '+t.toFixed(2)}
+function toggleCart(){cart.classList.toggle('active')}
+function checkout(){let msg='Pedido VÉRUX GRIFES:%0A';let t=0;cart.forEach(i=>{t+=i.price;msg+=i.name+' - R$ '+i.price.toFixed(2)+'%0A'});msg+='Total: R$ '+t.toFixed(2);window.open('https://wa.me/5511975716043?text='+msg)}
+function filterProducts(c){renderProducts(c)}
 </script>
 </body>
 </html>
