@@ -273,19 +273,18 @@ function addProduto(){
 <script>
 // LOGIN
 // LOGIN ADMIN (SENHA CRIPTOGRAFADA)
-const USER = 'admin';
-const PASS_HASH = '21232f297a57a5a743894a0e4a801fc3'; // senha: admin
-function md5(string){return CryptoJS.MD5(string).toString();}
+// ===== LOGIN ADMIN SIMPLES (RESET FORÇADO) =====
+let ADMIN_USER = localStorage.getItem('adminUser') || 'admin';
+let ADMIN_PASS = localStorage.getItem('adminPass') || '1234';
 
 function loginAdmin(){
   const u = document.getElementById('adminUser').value;
   const p = document.getElementById('adminPass').value;
-  if(u===USER && md5(p)===PASS_HASH){
+  if(u===ADMIN_USER && p===ADMIN_PASS){
     localStorage.setItem('veruxAdmin','logado');
     document.getElementById('loginBox').style.display='none';
     document.getElementById('adminPanel').style.display='grid';
   } else alert('Login inválido');
-} else alert('Login inválido');
 }
 
 if(localStorage.getItem('veruxAdmin')==='logado'){
@@ -293,15 +292,36 @@ if(localStorage.getItem('veruxAdmin')==='logado'){
   document.getElementById('adminPanel').style.display='grid';
 }
 
-// PRODUTOS
+// ===== PRODUTOS (CRUD COMPLETO) =====
 function addProdutoPro(){
   const nome=pNome.value,img=pImagem.value,cor=pCor.value,preco=pPreco.value;
   if(!nome||!img||!preco){alert('Preencha tudo');return}
-
   const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
-  produtos.push({nome,img,cor,preco,estoque:10});({nome,img,cor,preco});
+  produtos.push({id:Date.now(),nome,img,cor,preco,estoque:10});
   localStorage.setItem('veruxProdutos',JSON.stringify(produtos));
   renderProdutos();
+  pNome.value=pImagem.value=pCor.value=pPreco.value='';
+}
+
+function removerProduto(id){
+  let produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
+  produtos = produtos.filter(p=>p.id!==id);
+  localStorage.setItem('veruxProdutos',JSON.stringify(produtos));
+  renderProdutos();
+}
+
+function renderProdutos(){
+  const grid=document.querySelector('.grid');
+  grid.innerHTML='';
+  const produtos = JSON.parse(localStorage.getItem('veruxProdutos')||'[]');
+  produtos.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<span class='badge'>ESTOQUE ${p.estoque}</span><img src='${p.img}'><div class='info'><h3>${p.nome}</h3><p>Cor: ${p.cor}</p><div class='price'>${p.preco}</div><button onclick=\"comprarWhatsAppProduto('${p.nome}','${p.cor}','${p.preco}')\">Comprar no WhatsApp</button><button onclick=\"removerProduto(${p.id})\" style='margin-top:10px;background:red'>Remover</button></div>`;
+    grid.appendChild(card);
+  });
+}
+renderProdutos();
 
 function removerProduto(index){
   if(!confirm('Remover este produto?')) return;
@@ -363,13 +383,17 @@ renderProdutos();
 </script>
 <script>
 // ABA SECRETA ADMIN SEM MEXER EM CÓDIGO
-function abrirAdmin(){
-  const painel = document.getElementById('painel');
-  const frete = document.getElementById('freteAdmin');
-  const show = painel.style.display === 'none' || painel.style.display === '';
-  painel.style.display = show ? 'block' : 'none';
-  frete.style.display = show ? 'block' : 'none';
-  window.scrollTo({ top: painel.offsetTop, behavior: 'smooth' });
+// ===== ABRIR PAINEL POR TECLA =====
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey && e.altKey && e.key.toLowerCase()==='v'){
+    const painel = document.getElementById('painel');
+    const frete = document.getElementById('freteAdmin');
+    const show = painel.style.display==='none' || painel.style.display==='';
+    painel.style.display = show ? 'block':'none';
+    frete.style.display = show ? 'block':'none';
+    window.scrollTo({top:painel.offsetTop,behavior:'smooth'});
+  }
+}););
 }
 
 // 🔑 TECLA SECRETA PARA ABRIR PAINEL (CTRL + ALT + V)
