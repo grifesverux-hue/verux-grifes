@@ -48,7 +48,29 @@ footer span{color:var(--a)}
 @media(max-width:900px){section{padding:70px 25px}.push{grid-template-columns:1fr;padding:40px}.hero h2{font-size:44px}}
 </style>
 <!-- MERCADO PAGO SDK -->
-<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script src="https://sdk.mercadopago.com/js/v2">// 🔴 RESET FORÇADO DO PAINEL (SEM CRIPTOGRAFIA)
+// ⚠️ AVISO: CREDENCIAIS SIMPLES — USE APENAS TEMPORARIAMENTE
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = '1234';
+
+function validarLoginSimples(user, pass){
+  return user === ADMIN_USER && pass === ADMIN_PASS;
+}
+
+// Sobrescreve qualquer validação anterior
+window.validarLogin = validarLoginSimples;
+
+console.warn('Painel em modo simples: admin / 1234');
+
+// 🔑 ALTERAR SENHA PELO PAINEL
+function trocarSenha(nova){
+  if(!nova || nova.length < 3){
+    alert('Senha muito curta');return;
+  }
+  window.ADMIN_PASS = nova;
+  alert('Senha alterada com sucesso!');
+}
+</script>
 </head>
 <body>
 <header>
