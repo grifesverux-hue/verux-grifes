@@ -1,0 +1,151 @@
+index.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VÉRUX GRIFES | Loja Oficial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--black:#0b0b0b;--gold:#c9a24d;--white:#f5f5f5;--gray:#1a1a1a}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:var(--black);color:var(--white)}
+    header{padding:25px 10%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f1f1f;position:sticky;top:0;background:var(--black);z-index:10}
+    header h1{font-family:'Cinzel',serif;color:var(--gold);letter-spacing:3px}
+    nav a{color:var(--white);margin-left:25px;text-decoration:none;font-size:.9rem}
+    nav a:hover{color:var(--gold)}
+    .hero{padding:120px 10%;text-align:center}
+    .hero h2{font-family:'Cinzel',serif;font-size:3rem;color:var(--gold)}
+    .hero p{margin:20px auto;max-width:700px}
+    .btn{display:inline-block;margin-top:30px;padding:15px 40px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;letter-spacing:2px}
+    .btn:hover{background:var(--gold);color:var(--black)}
+    section{padding:80px 10%}
+    h3{font-family:'Cinzel',serif;color:var(--gold);font-size:2.2rem;margin-bottom:30px;text-align:center}
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px}
+    .product{border:1px solid #1f1f1f;padding:20px;background:var(--gray)}
+    .product img{width:100%;height:300px;object-fit:cover}
+    .product h4{margin:15px 0;font-weight:500}
+    .price{color:var(--gold);font-size:1.2rem}
+    .product button{margin-top:15px;width:100%;padding:12px;border:1px solid var(--gold);background:none;color:var(--gold);cursor:pointer}
+    .product button:hover{background:var(--gold);color:var(--black)}
+    .info{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;text-align:center}
+    .info div{border:1px solid #1f1f1f;padding:30px}
+    footer{text-align:center;padding:40px;border-top:1px solid #1f1f1f;font-size:.9rem}
+    footer span{color:var(--gold)}
+    .cart-btn{position:fixed;right:20px;bottom:20px;background:var(--gold);color:var(--black);padding:15px 20px;border-radius:50px;font-weight:600;cursor:pointer}
+    .cart-panel{position:fixed;top:0;right:-100%;width:350px;height:100vh;background:var(--black);border-left:1px solid #1f1f1f;padding:20px;transition:.3s;z-index:20}
+    .cart-panel.active{right:0}
+    .cart-item{margin-bottom:15px;border-bottom:1px solid #1f1f1f;padding-bottom:10px}
+    .checkout{margin-top:20px;padding:12px;width:100%;background:var(--gold);border:none;font-weight:600;cursor:pointer}
+    .whatsapp{position:fixed;left:20px;bottom:20px;background:#25d366;color:#000;padding:14px 18px;border-radius:50px;font-weight:600;text-decoration:none}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>VÉRUX</h1>
+  <nav>
+    <a href="#">Início</a>
+    <a href="#produtos">Loja</a>
+    <a href="#">Contato</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Vista o que poucos podem</h2>
+  <p>Grifes exclusivas, peças limitadas e presença elevada. A VÉRUX GRIFES é para quem não aceita o comum.</p>
+  <a class="btn" href="#produtos">Comprar agora</a>
+</section>
+
+<section id="produtos">
+  <h3>Loja Oficial</h3>
+  <div class="products">
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1520974735194-8e7f2b0bdaaa" />
+      <h4>Camiseta Premium Lion</h4>
+      <div class="price">R$ 299,90</div>
+      <button onclick="addToCart('Camiseta Premium Lion',299.90)">Adicionar ao carrinho</button>
+    </div>
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246" />
+      <h4>Jaqueta Elite Black</h4>
+      <div class="price">R$ 899,90</div>
+      <button onclick="addToCart('Jaqueta Elite Black',899.90)">Adicionar ao carrinho</button>
+    </div>
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1521334884684-d80222895322" />
+      <h4>Conjunto Royal</h4>
+      <div class="price">R$ 1.199,90</div>
+      <button onclick="addToCart('Conjunto Royal',1199.90)">Adicionar ao carrinho</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h3>Por que comprar na VÉRUX?</h3>
+  <div class="info">
+    <div>Grifes selecionadas<br>Luxo real</div>
+    <div>Estoque limitado<br>Exclusividade</div>
+    <div>Envio rápido<br>Todo o Brasil</div>
+    <div>Compra segura<br>Pix & Cartão</div>
+  </div>
+</section>
+
+<footer>
+  <p><span>VÉRUX GRIFES</span> — Luxo • Poder • Exclusividade</p>
+  <p>Envio imediato | Atendimento via WhatsApp</p>
+</footer>
+
+<div class="cart-btn" onclick="toggleCart()">🛒 Carrinho</div>
+<div class="cart-panel" id="cart">
+  <h3>Carrinho</h3>
+  <div id="cart-items"></div>
+  <button class="checkout" onclick="checkout()">Finalizar no WhatsApp</button>
+</div>
+
+<a class="whatsapp" href="https://wa.me/5500000000000" target="_blank">WhatsApp</a>
+
+<script>
+  let cart = [];
+  function addToCart(name, price){
+    cart.push({name,price});
+    renderCart();
+    toggleCart();
+  }
+  function renderCart(){
+    const el=document.getElementById('cart-items');
+    el.innerHTML='';
+    cart.forEach(i=>{
+      el.innerHTML+=`<div class='cart-item'>${i.name}<br>R$ ${i.price.toFixed(2)}</div>`;
+    });
+  }
+  function toggleCart(){
+    document.getElementById('cart').classList.toggle('active');
+  }
+  function checkout(){
+    let total=0;
+    let msg='🦁 Pedido VÉRUX GRIFES:%0A%0A';
+    cart.forEach(i=>{total+=i.price;msg+=`${i.name} - R$ ${i.price.toFixed(2)}%0A`;});
+    msg+=`%0A💰 Total: R$ ${total.toFixed(2)}%0A%0APagamento via PIX:`;
+    document.getElementById('pix-total').innerText='R$ '+total.toFixed(2);
+    document.getElementById('pix-modal').classList.add('active');
+    window.whatsMsg=msg;
+  } - R$ ${i.price.toFixed(2)}%0A`);
+    window.open('https://wa.me/5500000000000?text='+msg,'_blank');
+  }
+</script>
+
+<div id="pix-modal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.3s">
+  <div style="background:#0b0b0b;border:1px solid #1f1f1f;padding:30px;text-align:center;max-width:400px;width:90%">
+    <h3 style="color:#c9a24d">Pagamento via PIX</h3>
+    <p>Valor do pedido:</p>
+    <strong id="pix-total"></strong>
+    <p style="margin:15px 0">Chave PIX:<br><strong>SUA-CHAVE-PIX-AQUI</strong></p>
+    <p>Após pagar, clique abaixo 👇</p>
+    <button class="checkout" onclick="window.open('https://wa.me/5500000000000?text='+window.whatsMsg,'_blank')">Confirmar pagamento</button>
+    <p style="margin-top:10px;cursor:pointer;color:#c9a24d" onclick="document.getElementById('pix-modal').classList.remove('active')">Fechar</p>
+  </div>
+</div>
+<style>#pix-modal.active{opacity:1;pointer-events:auto}</style>
+</body>
+</html>
