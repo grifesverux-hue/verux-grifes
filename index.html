@@ -1,129 +1,146 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>VÉRUX GRIFES | Loja Oficial</title>
-<meta name="description" content="VÉRUX GRIFES — Loja premium de roupas e tênis de grife. Exclusividade, luxo e envio rápido." />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Montserrat',sans-serif;background:#0b0b0b;color:#f5f5f5}
-header{padding:30px;text-align:center;border-bottom:1px solid #1f1f1f}
-header h1{font-family:'Playfair Display',serif;letter-spacing:4px;color:#d4af37}
-header p{color:#aaa;margin-top:8px}
-nav{display:flex;justify-content:center;gap:20px;margin-top:15px}
-nav a{color:#d4af37;text-decoration:none;font-size:14px}
-.container{max-width:1200px;margin:auto;padding:40px 20px}
-.filters{text-align:center;margin-bottom:30px}
-.filters button{margin:6px;padding:10px 18px;background:#111;color:#d4af37;border:1px solid #1f1f1f;cursor:pointer}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
-.product{background:#111;border:1px solid #1f1f1f;padding:20px;text-align:center;cursor:pointer;transition:.3s}
-.product:hover{transform:translateY(-6px)}
-.product img{width:100%;border-radius:12px;height:260px;object-fit:cover}
-.product h3{margin:15px 0 6px;color:#d4af37}
-.price{font-size:18px;font-weight:600}
-.cart{position:fixed;top:0;right:-100%;width:360px;height:100%;background:#0b0b0b;border-left:1px solid #1f1f1f;padding:20px;transition:.3s;z-index:20}
-.cart.active{right:0}
-.cart h2{text-align:center;color:#d4af37;margin-bottom:15px}
-.cart ul{list-style:none;font-size:14px}
-.cart input,.cart button{width:100%;padding:10px;margin-top:10px}
-.cart button{background:#d4af37;color:#000;border:none;font-weight:600}
-.open-cart{position:fixed;bottom:20px;right:20px;background:#d4af37;color:#000;padding:15px;border-radius:50%;cursor:pointer;font-weight:700}
-footer{margin-top:60px;padding:30px;text-align:center;font-size:13px;color:#777;border-top:1px solid #1f1f1f}
-footer a{color:#d4af37;text-decoration:none;margin:0 8px}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:30}
-.modal-content{background:#111;padding:30px;max-width:420px;width:92%;border:1px solid #1f1f1f}
-select,button{width:100%;padding:10px;margin-top:10px}
-.pix{text-align:center;border-top:1px solid #1f1f1f;margin-top:15px;padding-top:15px}
-.pix img{width:170px;margin:10px auto}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verux Grifes | Loja Premium</title>
+  <meta name="description" content="Verux Grifes – Loja premium de tênis, roupas e chinelos. Luxo, presença e exclusividade." />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--p:#000;--s:#fff;--a:#c9a24d;--g:#f4f4f4}
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{background:#fff;color:#000}
+    header{background:#000;color:#fff;padding:18px 60px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}
+    nav a{color:#fff;margin-left:20px;text-decoration:none;font-weight:500}
+    nav a:hover{color:var(--a)}
+    .hero{height:95vh;background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f');background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff}
+    .hero h2{font-size:56px;margin-bottom:20px}
+    .hero p{font-size:22px;margin-bottom:35px}
+    .btn{background:var(--a);color:#000;padding:14px 38px;border-radius:30px;text-decoration:none;font-weight:600;cursor:pointer}
+    section{padding:90px 60px}
+    .title{text-align:center;font-size:38px;margin-bottom:60px}
+
+    /* PUSH */
+    .push{background:#000;color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+    .push img{width:100%;border-radius:20px}
+    .push h3{font-size:44px;margin-bottom:20px}
+
+    /* PRODUTOS */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:35px}
+    .card{background:var(--g);border-radius:18px;overflow:hidden;position:relative;transition:.3s}
+    .card:hover{transform:translateY(-8px)}
+    .badge{position:absolute;top:15px;left:15px;background:var(--a);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600}
+    .card img{width:100%;height:300px;object-fit:cover}
+    .info{padding:22px}
+    .price{color:var(--a);font-weight:600;margin:10px 0}
+    .info button{width:100%;padding:14px;border:none;background:#000;color:#fff;border-radius:12px;cursor:pointer}
+
+    /* BENEFÍCIOS */
+    .benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;text-align:center}
+    .benefit{padding:30px;border:1px solid #eee;border-radius:20px}
+
+    /* TESTEMUNHOS */
+    .test{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px}
+    .test div{background:#000;color:#fff;padding:30px;border-radius:22px}
+
+    /* FAQ */
+    .faq details{margin-bottom:15px;border:1px solid #eee;padding:18px;border-radius:14px}
+
+    /* NEWS */
+    .news{background:var(--a);text-align:center;padding:70px;border-radius:35px}
+    .news input{padding:14px;width:280px;border:none;border-radius:25px}
+    .news button{padding:14px 28px;border:none;border-radius:25px;font-weight:600}
+
+    /* FLOAT WHATS */
+    .whats{position:fixed;bottom:25px;right:25px;background:#25d366;color:#fff;padding:16px 22px;border-radius:50px;text-decoration:none;font-weight:600;z-index:50}
+
+    footer{background:#111;color:#aaa;padding:50px;text-align:center}
+    footer span{color:var(--a)}
+
+    @media(max-width:900px){.push{grid-template-columns:1fr}.hero h2{font-size:42px}}
+  </style>
 </head>
 <body>
 <header>
-<h1>VÉRUX GRIFES</h1>
-<p>Luxo não se explica. Se veste.</p>
-<nav>
-<a href="#">Loja</a>
-<a href="#">Trocas</a>
-<a href="#">Contato</a>
-</nav>
+  <h1>VERUX GRIFES</h1>
+  <nav>
+    <a href="#">Início</a>
+    <a href="#push">Destaque</a>
+    <a href="#produtos">Produtos</a>
+    <a href="#faq">FAQ</a>
+  </nav>
 </header>
 
-<div class="container">
-<div class="filters">
-<button onclick="filterProducts('all')">Todos</button>
-<button onclick="filterProducts('tenis')">Tênis</button>
-<button onclick="filterProducts('jaqueta')">Jaquetas</button>
-<button onclick="filterProducts('camiseta')">Camisetas</button>
-<button onclick="filterProducts('calca')">Calças</button>
-<button onclick="filterProducts('chinelo')">Chinelos</button>
-</div>
-<section class="products" id="products"></section>
+<div class="hero">
+  <div>
+    <h2>Luxo Que Impõe Presença</h2>
+    <p>Marca premium criada para quem não passa despercebido</p>
+    <a href="#push" class="btn">Comprar Agora</a>
+  </div>
 </div>
 
-<div class="cart" id="cart">
-<h2>Carrinho</h2>
-<ul id="cart-items"></ul>
-<p id="total"></p>
-<button onclick="checkout()">Finalizar no WhatsApp</button>
-</div>
-<div class="open-cart" onclick="toggleCart()">🛒</div>
+<section id="push" class="push">
+  <div>
+    <h3>Produto Campeão 🔥</h3>
+    <p>O item mais desejado da Verux. Estoque limitado.</p>
+    <a class="btn">Garantir o Meu</a>
+  </div>
+  <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519" />
+</section>
 
-<div class="modal" id="productModal"><div class="modal-content">
-<h3 id="p-name"></h3><p id="p-price"></p><p id="p-stock"></p>
-<select id="p-size"></select>
-<button onclick="addSelectedToCart()">Adicionar ao Carrinho</button>
-<div class="pix"><p>Pagamento via PIX</p>
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PIX-VERUX" />
-<p>Chave PIX: <strong>PIX-VERUX</strong></p></div>
-<button onclick="closeModal()">Fechar</button>
-</div></div>
+<section id="produtos">
+  <h2 class="title">Coleção Completa</h2>
+  <div class="grid">
+    <div class="card"><span class="badge">TOP</span><img src="https://photo.yupoo.com/tophotfashion/08be0791/4a62e2d0.jpeg" alt="Produto Verux Preto"><div class="info"><h3>Verux Exclusive Black</h3><p>Cor: Preto</p><div class="price">R$ 1.900,00</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
+    <div class="card"><span class="badge">NOVO</span><img src="https://images.unsplash.com/photo-1593032465175-481ac7f401a0"><div class="info"><h3>Moletom Premium</h3><div class="price">R$ 329,90</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1622560480654-d96214fdc887"><div class="info"><h3>Slide Luxo</h3><div class="price">R$ 219,90</div><button onclick="comprarWhatsApp()">Comprar no WhatsApp</button></div></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="title">Por Que Verux?</h2>
+  <div class="benefits">
+    <div class="benefit">🚚 Envio rápido</div>
+    <div class="benefit">💎 Qualidade premium</div>
+    <div class="benefit">🔒 Compra segura</div>
+    <div class="benefit">🔥 Exclusividade</div>
+  </div>
+</section>
+
+<section>
+  <h2 class="title">Clientes Verux</h2>
+  <div class="test">
+    <div>"Marca absurda. Produto diferenciado."</div>
+    <div>"Entrega rápida e qualidade alta."</div>
+    <div>"Visual premium de verdade."</div>
+  </div>
+</section>
+
+<section id="faq" class="faq">
+  <h2 class="title">Perguntas Frequentes</h2>
+  <details><summary>Entrega é rápida?</summary><p>Sim, despacho em até 24h.</p></details>
+  <details><summary>Posso trocar?</summary><p>Sim, até 7 dias após recebimento.</p></details>
+  <details><summary>Pagamento é seguro?</summary><p>Totalmente protegido.</p></details>
+</section>
+
+<section class="news">
+  <h2>Lista VIP Verux</h2>
+  <p>Receba lançamentos e ofertas exclusivas</p><br>
+  <input placeholder="Seu email" />
+  <button>Entrar</button>
+</section>
+
+<a href="https://wa.me/5599999999999" class="whats">WhatsApp</a>
 
 <footer>
-<p>© 2026 VÉRUX GRIFES — Todos os direitos reservados</p>
+  <p>© 2026 <span>Verux Grifes</span> — Marca Premium</p>
+  <p>Políticas • Termos • Privacidade</p>
 </footer>
-
 <script>
-let cart=[];let current={};
-const productsData=[];
-const categories=['tenis','jaqueta','camiseta','calca','chinelo'];
-
-for(let i=1;i<=100;i++){
-  const cat=categories[i%categories.length];
-  productsData.push({
-    name:`Produto VÉRUX ${i}`,
-    price:(199+(i*7)).toFixed(2),
-    category:cat,
-    stock:Math.floor(Math.random()*15)+1,
-    sizes:cat==='tenis'?['38','39','40','41','42','43']:['P','M','G','GG'],
-    img:`https://source.unsplash.com/400x400/?fashion,${cat},${i}`
-  });
+function comprarWhatsApp(){
+  const msg = encodeURIComponent('Olá! Quero comprar o produto VERUX EXCLUSIVE BLACK\nCor: Preto\nValor: R$ 1.900,00');
+  window.open('https://wa.me/5511975716043?text='+msg,'_blank');
 }
-
-const productsEl=document.getElementById('products');
-
-function renderProducts(filter='all'){
-  productsEl.innerHTML='';
-  productsData.forEach(p=>{
-    if(filter!=='all' && p.category!==filter) return;
-    const div=document.createElement('div');
-    div.className='product';
-    div.dataset.category=p.category;
-    div.onclick=()=>openProduct(p.name,parseFloat(p.price),p.sizes,p.stock);
-    div.innerHTML=`<img src="${p.img}"/><h3>${p.name}</h3><div class="price">R$ ${p.price}</div>`;
-    productsEl.appendChild(div);
-  });
-}
-renderProducts();
-
-function openProduct(n,p,s,st){current={n,p,s,st};p_name.innerText=n;p_price.innerText='R$ '+p.toFixed(2);p_stock.innerText='Estoque: '+st;p_size.innerHTML='';s.forEach(t=>{let o=document.createElement('option');o.value=t;o.text=t;p_size.add(o)});productModal.style.display='flex'}
-function closeModal(){productModal.style.display='none'}
-function addSelectedToCart(){cart.push({name:current.n+' ('+p_size.value+')',price:current.p});renderCart();closeModal()}
-function renderCart(){cart_items.innerHTML='';let t=0;cart.forEach(i=>{t+=i.price;let li=document.createElement('li');li.innerText=i.name+' - R$ '+i.price.toFixed(2);cart_items.appendChild(li)});total.innerText='Total: R$ '+t.toFixed(2)}
-function toggleCart(){cart.classList.toggle('active')}
-function checkout(){let msg='Pedido VÉRUX GRIFES:%0A';let t=0;cart.forEach(i=>{t+=i.price;msg+=i.name+' - R$ '+i.price.toFixed(2)+'%0A'});msg+='Total: R$ '+t.toFixed(2);window.open('https://wa.me/5511975716043?text='+msg)}
-function filterProducts(c){renderProducts(c)}
 </script>
 </body>
 </html>
